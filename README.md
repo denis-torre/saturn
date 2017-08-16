@@ -1,2 +1,0 @@
-# saturn
-Jupyter Notebook Generator
