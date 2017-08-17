@@ -49,7 +49,7 @@ def fetch_dataset(dataset_id):
         rawcount_dataframe = pd.DataFrame([x.split('\t') for x in data.split('\n')[1:] if '!' not in x])
 
         # Fix axis names
-        dataset['rawcount_dataframe'] = rawcount_dataframe.rename(columns=rawcount_dataframe.iloc[0]).drop(0).set_index('ID_REF').fillna(0).astype('int')
+        dataset['expression_dataframe'] = rawcount_dataframe.rename(columns=rawcount_dataframe.iloc[0]).drop(0).set_index('ID_REF').fillna(0).astype('int')
 
         # Get metadata dataframe
         metadata_dataframe = pd.DataFrame([x.split('\t') for x in data.split('\n')[1:] if any(y in x for y in ['!Sample', '!^SAMPLE'])]).set_index(0)
@@ -63,22 +63,11 @@ def fetch_dataset(dataset_id):
         # Create dict
         dataset['sample_metadata_dataframe'] = pd.DataFrame({sample_accession: metadata_dict for sample_accession, metadata_dict in zip(metadata_dataframe.loc['!^SAMPLE'], metadata_dict)}).T
 
-        # Print
-        print 'Successfully fetched dataset.'
+        # Display
+        display(HTML('<h5>Expression data</h5><p>Rows are genes, columns are samples, values are raw counts.</p>'))
+        display(dataset['expression_dataframe'].head())
+        display(HTML('<h5>Sample metadata</h5><p>Rows are samples (i.e. columns of the expression dataset), columns are metadata tags, values are categories.</p>'))
+        display(dataset['sample_metadata_dataframe'].head())
 
         # Return
         return dataset
-
-#######################################################
-########## 3. Display Dataset #########################
-#######################################################
-
-def display_dataset(dataset):
-
-    display(HTML('<h5>Expression data</h5><p>Rows are genes, columns are samples, values are raw counts.</p>'))
-    display(dataset['rawcount_dataframe'].head())
-    display(HTML('<h5>Sample metadata</h5><p>Rows are samples (i.e. columns of the expression dataset), columns are metadata tags, values are categories.</p>'))
-    display(dataset['sample_metadata_dataframe'].head())
-    # print ''
-    # print 'Sample metadata:'
-    # print dataset['sample_metadata_dataframe'].head()

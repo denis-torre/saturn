@@ -8,6 +8,10 @@ from AnalysisNotebook import generate_jupyter_notebook
 app = Flask(__name__)
 entry_point = '/saturn'
 
+@app.route(entry_point)
+def index():
+	return ''
+
 @app.route(entry_point+'/analyze')
 def analyze():
 	return render_template('notebook.html')
