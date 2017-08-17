@@ -1,5 +1,6 @@
 # Modules
 import json, sys
+import pandas as pd
 from flask import Flask, render_template, url_for, request
 sys.path.append('static/py')
 from AnalysisNotebook import generate_jupyter_notebook
@@ -10,7 +11,10 @@ entry_point = '/saturn'
 
 @app.route(entry_point)
 def index():
-	return ''
+
+	dataset_dataframe = pd.read_table('static/datasets.txt')
+	tool_dataframe = pd.read_table('static/tools.txt')
+	return render_template('index.html', dataset_dataframe=dataset_dataframe, tool_dataframe=tool_dataframe)
 
 @app.route(entry_point+'/analyze')
 def analyze():

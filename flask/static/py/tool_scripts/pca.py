@@ -16,6 +16,7 @@ from IPython.display import display, HTML
 def analyze(dataset, n_components=3, title='PCA'):
 
     # Filter
+    dataset['expression_dataframe'] = np.log10(dataset['expression_dataframe']+1)
     topGenes = dataset['expression_dataframe'].apply(np.var, 1).sort_values(ascending=False).index[:5000]
     dataset['expression_dataframe'] = dataset['expression_dataframe'].loc[topGenes]
 
